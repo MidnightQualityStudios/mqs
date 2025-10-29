@@ -23,28 +23,32 @@ jobs:
 
       - name: Flutter doctor
         run: flutter doctor -v
+        working-directory: cashpointrd
 
       - name: Enable Windows desktop
         run: flutter config --enable-windows-desktop
+        working-directory: cashpointrd
 
       - name: Fetch dependencies
         run: flutter pub get
+        working-directory: cashpointrd
 
       - name: Build Windows release
         run: flutter build windows --release
+        working-directory: cashpointrd
 
       - name: Zip Windows runner directory
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $outDir = "build\windows\x64\runner\Release"
+          $outDir = "cashpointrd/build/windows/x64/runner/Release"
           if (-not (Test-Path $outDir)) {
             Write-Error "Output directory not found: $outDir"
           }
-          $zipPath = "artifact\cashpointrd-windows-release.zip"
+          $zipPath = "artifact/cashpointrd-windows-release.zip"
           New-Item -Force -ItemType Directory -Path (Split-Path $zipPath) | Out-Null
           if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
-          Compress-Archive -Path "$outDir\*" -DestinationPath $zipPath -Force
+          Compress-Archive -Path "$outDir/*" -DestinationPath $zipPath -Force
           Write-Host "Created artifact: $zipPath"
 
       - name: Upload artifact
