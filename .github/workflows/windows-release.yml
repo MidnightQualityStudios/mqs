@@ -39,14 +39,13 @@ jobs:
 
       - name: Zip Windows runner directory
         shell: pwsh
-        working-directory: cashpointrd
         run: |
           $ErrorActionPreference = 'Stop'
-          $outDir = "build/windows/x64/runner/Release"
+          $outDir = "cashpointrd/build/windows/x64/runner/Release"
           if (-not (Test-Path $outDir)) {
             Write-Error "Output directory not found: $outDir"
           }
-          $zipPath = "../artifact/cashpointrd-windows-release.zip"
+          $zipPath = "artifact/cashpointrd-windows-release.zip"
           New-Item -Force -ItemType Directory -Path (Split-Path $zipPath) | Out-Null
           if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
           Compress-Archive -Path "$outDir/*" -DestinationPath $zipPath -Force
